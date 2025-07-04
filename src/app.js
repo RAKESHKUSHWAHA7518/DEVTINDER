@@ -2,10 +2,17 @@
 
  const app= express();
 
+ const {adminAuth}= require('./middlerwares/auth');
 
- app.use('/',(req,res)=>{
-    res.send('Hellow Rakesh from dasgboard')
+
+//  app.use('/',(req,res)=>{
+//     res.send('Hellow Rakesh from dasgboard')
+//  })
+
+app.use('/admin',adminAuth, (req,res)=>{
+    res.send('Hellow Rakesh from admin dasgboard')
  })
+
  app.use('/test',(req,res)=>{
     res.send('Hellow Rakesh')
  })
