@@ -5,6 +5,7 @@
 
  const {adminAuth}= require('./middlerwares/auth');
 const User= require('./models/user');
+app.use(express.json())
 
 //  app.use('/',(req,res)=>{
 //     res.send('Hellow Rakesh from dasgboard')
@@ -36,15 +37,10 @@ const User= require('./models/user');
 // })
 
 app.post('/signup', async (req, res) => {
+  console.log(req.body);
+  
   try {
-    const userObj = {
-      firstName: 'Rakesh Kumar',
-      lastName: 'Kushwaha',
-      emailId: 'rrr@gmail.com',
-      password: '12345678',
-      age: 22,
-      gender: 'male',
-    };
+    const userObj = req.body
 
     const user = new User(userObj);
     await user.save();
@@ -53,6 +49,19 @@ app.post('/signup', async (req, res) => {
   } catch (err) {
     console.error('Signup error:', err);
     res.status(500).json({ message: 'Signup failed' });
+  }
+});
+
+app.get('/users', async (req, res) => {
+  
+  try {
+    const users = await User.find();
+    console.log('Fetched users:', users);
+    
+    res.status(200).json(users);
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    res.status(500).json({ message: 'Error fetching users' });
   }
 });
 
