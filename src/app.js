@@ -1,10 +1,11 @@
  const express= require('express');
-
+const bcrypt = require('bcrypt');
  const app= express();
  const connectDB= require('./config/database');
 
  const {adminAuth}= require('./middlerwares/auth');
 const User= require('./models/user');
+const { validatorSignUp } = require('./utisl/validation');
 app.use(express.json())
 
 //  app.use('/',(req,res)=>{
@@ -38,17 +39,42 @@ app.use(express.json())
 
 app.post('/signup', async (req, res) => {
   console.log(req.body);
+const password = req.body.password;
+const passwordhash = await bcrypt.hash(password, 10);
+  console.log('Password hash:', passwordhash);
   
   try {
-    const userObj = req.body
+    validatorSignUp(req)
+    const {firstName, lastName, emailId,  age, gender, photoUrl, about, skills} = req.body
+console.log(passwordhash);
 
-    const user = new User(userObj);
+    const user = new User( {firstName, lastName, emailId, password: passwordhash, age, gender, photoUrl, about, skills});
     await user.save();
 
     res.status(201).json({ message: 'User created successfully', user });
   } catch (err) {
     console.error('Signup error:', err);
-    res.status(500).json({ message: 'Signup failed' });
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.post('/login', async (req, res) => {
+  const { emailId, password } = req.body;
+  try {
+    const user = await User.findOne({ emailId });
+    console.log('User found:', user);
+    
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email ' });
+    }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+    res.status(200).json({ message: 'Login successful' });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
