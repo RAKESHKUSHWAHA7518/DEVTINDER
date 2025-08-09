@@ -9,3 +9,6 @@ Install nodemon and update scripts inside package.json
 What are dependencies
 What is the use of "-g" while npm install is
 Difference between caret and tilde (^vs )
+diffrent between put and patch
+what jwt 
+cookes 

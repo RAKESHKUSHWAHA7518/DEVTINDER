@@ -71,6 +71,10 @@ app.post('/login', async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
+
+
+    //  create jwt cookes
+    
     res.status(200).json({ message: 'Login successful' });
   } catch (err) {
     console.error('Login error:', err);
