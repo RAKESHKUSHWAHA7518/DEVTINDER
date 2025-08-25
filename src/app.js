@@ -101,17 +101,7 @@ app.get('/Profile',userAuth, async (req, res) => {
 // console.log(cookes);
   // const {token} = cookies
   try {
-    // const users = await User.find();
-//     console.log('Fetched users:',token );
-//     const isverify = await jwt.verify(token, 'Rakesh7518');
-// console.log(isverify);
-
-    // if(!isverify){
-    //   return res.status(401).json({ message: 'Unauthorized access' });
-    // }else {
-    //   const userdata = await User.findById(isverify.id);
-    //   res.status(200).json(userdata);
-    // }
+    
     res.status(200).json(user);
     
    
@@ -120,6 +110,8 @@ app.get('/Profile',userAuth, async (req, res) => {
     res.status(500).json({ message: 'Error fetching users' });
   }
 });
+
+
 
 app.get('/users',userAuth, async (req, res) => {
 const cookes= req.cookies
