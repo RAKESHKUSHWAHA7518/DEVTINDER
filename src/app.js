@@ -70,9 +70,7 @@ app.get('/Profile',userAuth, async (req, res) => {
   const user= req.user
   console.log(user);
   
-// const cookies= req.cookies
-// console.log(cookes);
-  // const {token} = cookies
+ 
   try {
     
     res.status(200).json(user);
