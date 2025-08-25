@@ -3,10 +3,14 @@ const bcrypt = require('bcrypt');
  const app= express();
  const connectDB= require('./config/database');
 
- const {adminAuth}= require('./middlerwares/auth');
+ const {adminAuth, userAuth}= require('./middlerwares/auth');
 const User= require('./models/user');
 const { validatorSignUp } = require('./utisl/validation');
 app.use(express.json())
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+const jwt = require('jsonwebtoken');
+
 
 //  app.use('/',(req,res)=>{
 //     res.send('Hellow Rakesh from dasgboard')
@@ -68,22 +72,58 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email ' });
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+    if (passwordMatch) {
+
+      var token = await jwt.sign({ id: user._id }, 'Rakesh7518');
+      res.cookie('token', token);
+      
+       res.status(200).json({ message: 'Login successful' });
+     
+    } else {
+ return res.status(401).json({ message: 'Invalid email or password' });
     }
 
 
     //  create jwt cookes
     
-    res.status(200).json({ message: 'Login successful' });
+   
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-app.get('/users', async (req, res) => {
+app.get('/Profile',userAuth, async (req, res) => {
+  const user= req.user
+  console.log(user);
+  
+// const cookies= req.cookies
+// console.log(cookes);
+  // const {token} = cookies
+  try {
+    // const users = await User.find();
+//     console.log('Fetched users:',token );
+//     const isverify = await jwt.verify(token, 'Rakesh7518');
+// console.log(isverify);
 
+    // if(!isverify){
+    //   return res.status(401).json({ message: 'Unauthorized access' });
+    // }else {
+    //   const userdata = await User.findById(isverify.id);
+    //   res.status(200).json(userdata);
+    // }
+    res.status(200).json(user);
+    
+   
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    res.status(500).json({ message: 'Error fetching users' });
+  }
+});
+
+app.get('/users',userAuth, async (req, res) => {
+const cookes= req.cookies
+console.log(cookes);
   try {
     const users = await User.find();
     console.log('Fetched users:', users);
@@ -135,6 +175,15 @@ app.patch('/users/:userId', async (req, res) => {
   }
 })
 
+
+app.post('/sendconnectionrequest',userAuth, async (req, res) => {
+
+  const user=req.user;
+  console.log(user);
+  
+  res.send(`Hellow ${user.firstName} from send connection request`)
+
+})
  
 connectDB().then(() => {
   console.log('MongoDB connected successfully');
