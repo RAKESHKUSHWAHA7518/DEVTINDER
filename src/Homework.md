@@ -12,3 +12,4 @@ Difference between caret and tilde (^vs )
 diffrent between put and patch
 what jwt 
 cookes 
+and add auth middleware
