@@ -12,34 +12,7 @@ app.use(cookieParser());
 const jwt = require('jsonwebtoken');
 
 
-//  app.use('/',(req,res)=>{
-//     res.send('Hellow Rakesh from dasgboard')
-//  })
 
-// app.use('/admin',adminAuth, (req,res)=>{
-//     res.send('Hellow Rakesh from admin dasgboard')
-//  })
-
-//  app.use('/test',(req,res)=>{
-//     res.send('Hellow Rakesh')
-//  })
-
-//  app.post('/signup',async(req,res)=>{
-//    const userObj={
-//       firstName: 'Rakesh',
-//       lastName: 'Kushwaha',
-//       emailId: 'rrr@gmail.com',
-//       password:'123456789',
-//       age: 22,
-//       gender:"male" ,
-
-
-//    }
-
-// const user= new User(userObj);
-//  await user.save() 
-
-// })
 
 app.post('/signup', async (req, res) => {
   console.log(req.body);
