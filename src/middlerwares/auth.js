@@ -12,10 +12,9 @@ const User = require('../models/user');
       return res.status(401).json({ message: 'Token is not found' });
     }
 
-    // const users = await User.find();
-    // console.log('Fetched users:',token );
+   
     const isverify = await jwt.verify(token, 'Rakesh7518');
-// console.log(isverify);
+ 
 
     if(!isverify){
       return res.status(401).json({ message: 'Unauthorized access' });
