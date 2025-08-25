@@ -71,10 +71,10 @@ app.post('/login', async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: 'Invalid email ' });
     }
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await user.varifypassword(password);
     if (passwordMatch) {
 
-      var token = await jwt.sign({ id: user._id }, 'Rakesh7518');
+      var token = await  user.getJWT();
       res.cookie('token', token);
       
        res.status(200).json({ message: 'Login successful' });
