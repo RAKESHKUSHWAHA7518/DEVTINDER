@@ -38,6 +38,8 @@ authRouter.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email ' });
     }
     const passwordMatch = await user.varifypassword(password);
+    console.log(passwordMatch);
+    
     if (passwordMatch) {
 
       var token = await  user.getJWT();
