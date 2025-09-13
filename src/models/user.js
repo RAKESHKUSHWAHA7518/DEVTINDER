@@ -73,6 +73,8 @@ type:[String]
 
 } ,{ timestamps: true  });
 
+
+userSchema.index({firstName:1,lastName:1} );
  userSchema.methods.getJWT= async function(){
   const user= this
   var token = await jwt.sign({ id: user._id }, 'Rakesh7518',{expiresIn:'2h'});
